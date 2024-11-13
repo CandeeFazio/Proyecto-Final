@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Divina</title>
+    <link rel="stylesheet" href="carrito.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo.png" alt="Aura Divina Logo">
+                </a>
+            </div>
+            <ul id="ulmenu" class="nav-links"></ul>
+            <div class="menu-icon" id="menu-icon">
+                &#9776; <!-- Icono de hamburguesa -->
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Carrito</h2>
+        <table>
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Cantidad</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody id="tablacarrito">
+        </tbody>
+        </table>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Aura divina. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Vincula el archivo JS correcto -->
+    <script src="carrito.js"></script>
+</body>
+</html>

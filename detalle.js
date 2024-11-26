@@ -1,121 +1,85 @@
-// Definición de un array 'menus' que contiene los elementos de navegación con sus nombres y URLs
 const menus = [
-    { nombre: "Inicio", url: "index.html" },         // Menú "Inicio"
-    { nombre: "¿Quienes somos?", url: "quienes.html" }, // Menú "¿Quienes somos?"
-    { nombre: "Contacto", url: "contacto.html" },    // Menú "Contacto"
-    { nombre: "Carrito", url: "carrito.html" },      // Menú "Carrito"
+    { nombre: "Inicio", url: "index.html" },
+    { nombre: "¿Quienes somos?", url: "quienes.html" },
+    { nombre: "Contacto", url: "contacto.html" },
+    { nombre: "Carrito", url: "carrito.html" },
 ];
 
-// Función para cargar el menú dinámicamente
 function cargarmenu() {
-    // Obtiene el elemento "ulmenu" donde se insertarán los ítems del menú
     let enlaces = document.getElementById("ulmenu");
-
-    // Si se encuentra el contenedor "ulmenu", se crean los ítems del menú
     if (enlaces) {
         for (const menu of menus) {
-            let lista = document.createElement("li"); // Crea un elemento <li> para cada menú
-            lista.innerHTML = `<a href="${menu.url}">${menu.nombre}</a>`; // Crea un enlace <a> con la URL y el nombre
-            enlaces.appendChild(lista); // Añade el <li> al contenedor "ulmenu"
+            let lista = document.createElement("li");
+            lista.innerHTML = `<a href="${menu.url}">${menu.nombre}</a>`;
+            enlaces.appendChild(lista);
         }
     } else {
-        console.error("No se encontró el elemento 'ulmenu'"); // Mensaje de error si no se encuentra el contenedor
+        console.error("No se encontró el elemento 'ulmenu'");
     }
 }
 
-// Llama a la función para cargar el menú al cargar la página
 cargarmenu();
 
-// Recupera el detalle del producto desde el localStorage
 let productodetalle = JSON.parse(localStorage.getItem("detalleproducto"));
 
-// Función para cargar los detalles del producto en la página
 function cargarproducto() {
-    // Obtiene el contenedor "boxproductos"
-    let enlaces = document.getElementById("boxproductos");
+    if (productodetalle) {
+        let enlaces = document.getElementById("boxproductos");
+        let lista = document.createElement("div");
 
-    // Crea un contenedor con la información del producto
-    let lista = document.createElement("div");
-    lista.innerHTML = `
-        <div class="boxdetalle">
-            <div>
-                <h3>${productodetalle.nombre}</h3> <!-- Muestra el nombre del producto -->
-                <img src=${productodetalle.urlImagen} alt="" width="200"> <!-- Muestra la imagen del producto -->
-            </div>
-            <div class="boxdescripcion">
-                <p class="precio">$ ${productodetalle.precio}</p> <!-- Muestra el precio -->
-                <p>${productodetalle.descripcion}</p> <!-- Muestra la descripción -->
-                <div class="boxcontador">
-                    <button onclick="sumar()">+</button> <!-- Botón para sumar cantidad -->
-                    <p id="contarproducto">0</p> <!-- Muestra la cantidad de productos seleccionados -->
-                    <button onclick="restar()">-</button> <!-- Botón para restar cantidad -->
+        // Generación del HTML para el producto
+        lista.innerHTML = `
+            <h3>${productodetalle.nombre}</h3>
+            <img src="${productodetalle.urlImagen}" alt="Imagen del producto">
+            <p class="precio">${productodetalle.precio}</p> 
+            <div class="boxdetalle">
+                <div class="boxdescripcion">
+                    <p class="descripcion">${productodetalle.descripcion}</p>
+                    <div class="boxcontador">
+                        <button onclick="sumar()">+</button>
+                        <p id="contarproducto">0</p>
+                        <button onclick="restar()">-</button>
+                    </div>
+                    <button onclick="cargarcarrito()">Cargar carrito</button>
                 </div>
-                <button onclick="cargarcarrito()">Cargar al carrito</button> <!-- Botón para agregar al carrito -->
             </div>
-        </div>
-    `;
-    // Añade el contenedor con los detalles del producto al contenedor "boxproductos"
-    enlaces.appendChild(lista);
+        `;
+        enlaces.appendChild(lista);
+    } else {
+        console.error("No se encontró ningún producto en el localStorage");
+    }
 }
 
-// Llama a la función para cargar el producto al cargar la página
 cargarproducto();
 
-// Variable para llevar el control de la cantidad de productos seleccionados
 let contador = 0;
 
-// Función para sumar la cantidad de productos
 function sumar() {
-    let nstock = productodetalle.stock; // Obtiene el stock máximo del producto
-    if (contador < nstock) { // Si no hemos alcanzado el máximo, incrementa la cantidad
-        contador = contador + 1;
-        document.getElementById("contarproducto").innerHTML = contador; // Actualiza el contador en la página
+    let nstock = productodetalle.stock;
+    if (contador < nstock) {
+        contador++;
+        document.getElementById("contarproducto").innerHTML = contador;
     } else {
-        alert("Stock máximo de producto"); // Muestra alerta si se supera el stock
+        alert("Stock agotado!");
     }
 }
 
-// Función para restar la cantidad de productos
 function restar() {
-    if (contador > 0) { // Si la cantidad es mayor que 0, decrementa la cantidad
-        contador = contador - 1;
-        document.getElementById("contarproducto").innerHTML = contador; // Actualiza el contador en la página
+    if (contador > 0) {
+        contador--;
+        document.getElementById("contarproducto").innerHTML = contador;
     }
 }
 
-// Función para agregar el producto al carrito
 function cargarcarrito() {
-    if (contador === 0) { // Si no se ha seleccionado cantidad, muestra alerta
-        alert("Por favor, ingrese la cantidad de productos deseados.");
+    if (contador == 0) {
+        alert("Ingrese la cantidad de productos deseados, por favor.");
     } else {
-        // Obtiene el carrito almacenado en localStorage, o un array vacío si no existe
         let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-        
-        // Obtiene la cantidad de productos seleccionados desde el contador en la página
-        let cantidadproducto = parseInt(document.getElementById("contarproducto").innerHTML, 10);
-
-        // Crea un objeto con los datos del producto a agregar al carrito
-        let productoNuevo = {
-            id: productodetalle.id,          // ID del producto
-            nombre: productodetalle.nombre,  // Nombre del producto
-            cantidad: cantidadproducto,      // Cantidad seleccionada
-            precio: productodetalle.precio,  // Precio del producto
-            urlImagen: productodetalle.urlImagen // URL de la imagen del producto
-        };
-
-        // Verifica si el producto ya existe en el carrito
-        let encontrado = carrito.find(p => p.id === productoNuevo.id);
-        if (encontrado) { // Si el producto ya está en el carrito, suma las cantidades
-            encontrado.cantidad = parseInt(encontrado.cantidad, 10) + cantidadproducto;
-        } else { // Si no está, lo agrega al carrito
-            carrito.push(productoNuevo);
-        }
-
-        // Convierte el carrito a JSON y lo guarda en localStorage
+        productodetalle.cantidad = contador; // Agrega la cantidad al producto
+        carrito.push(productodetalle);
         const enJSON = JSON.stringify(carrito);
         localStorage.setItem("carrito", enJSON);
-
-        // Redirige a la página del carrito
         window.location.href = "carrito.html";
     }
 }

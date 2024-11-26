@@ -1,14 +1,14 @@
 const menus = [
     {nombre: "Inicio", url: "index.html"},
-    {nombre: "¿Quiénes somos?", url: "quienes.html"},
+    {nombre: "¿Quienes somos?", url: "quienes.html"},
     {nombre: "Contacto", url: "contacto.html"},
     {nombre: "Carrito", url: "carrito.html"},
 ];
 
 function cargarmenu() {
-    let enlaces = document.getElementById("ulmenu");
+    let enlaces = document.getElementById("ulmenu")
     for (const menu of menus) {
-        let lista = document.createElement("li");
+        let lista = document.createElement("li")
         lista.innerHTML = `<a href="${menu.url}">${menu.nombre}</a>`;
         enlaces.appendChild(lista);
     }
@@ -42,88 +42,81 @@ const productos = [
     },
     {
         id: 4,
-        nombre: "Lampara sal",
-        urlImagen: "lampara.jpg",
-        precio: 1100,
-        descripcion: "Lampara de sal, cuenco, incluye el foco.",
-        stock: 25
+        nombre: "Conos para cascada Aromanza",
+        urlImagen: "conos.jpg",
+        precio: 1200,
+        descripcion: "Conos para cascada, vienen fragancias como: reina de la noche, frutos rojos, sandalo hindu, vainilla, berry kiss",
+        stock: 12
     },
     {
-        id:5,
-        nombre: "Ganesha",
-        urlImagen: "ganesh.jpg",
-        precio: 1100,
-        descripcion: "Figura Ganesha 30cm color cobre",
-        stock: 25
+        id: 5,
+        nombre: "Cuencos defumacion",
+        urlImagen: "cuencos.jpg",
+        precio: 2500,
+        descripcion: "Cuencos defumacion, de 10cm x 10cm, todos hechos de ceramica",
+        stock: 7
     },
     {
         id: 6,
-        nombre: "Combo budas",
-        urlImagen: "buda.jpg",
-        precio: 1100,
-        descripcion: "Budas x2 , 15cm c/u",
-        stock: 25
+        nombre: "Cascada de humo",
+        urlImagen: "cascada.jpg",
+        precio: 5000,
+        descripcion: "Cascada humo, figuras como, buda, ganesha, mano",
+        stock: 30
     },
     {
         id: 7,
-        nombre: "Fuente de agua",
-        urlImagen: "fuente.jpg",
-        precio: 1100,
-        descripcion: "Fuente de agua de 10cm, con luces",
-        stock: 25
+        nombre: "Cascada de agua",
+        urlImagen: "cascada.jpg",
+        precio: 8000,
+        descripcion: "Cascada de agua, 10cm x 8cm",
+        stock: 20
     },
     {
         id: 8,
-        nombre: "Buda",
-        urlImagen: "buda2.jpg",
-        precio: 1100,
-        descripcion: "Buda 10cm",
-        stock: 25
+        nombre: "Horno para escencias",
+        urlImagen: "horno.jpg",
+        precio: 3500,
+        descripcion: "Horno a vela para escencias, 13cm (incluye 3 velas de regalo)",
+        stock: 10
     },
     {
         id: 9,
-        nombre: "Cuenco defumacion",
-        urlImagen: "cuencos.jpg",
-        precio: 1100,
-        descripcion: "Cuenco de defumacion",
-        stock: 25
+        nombre: "Lampara de sal",
+        urlImagen: "lampara.jpg",
+        precio: 6000,
+        descripcion: "Lampara de sal, figura de buda",
+        stock: 18
     },
     {
         id: 10,
-        nombre: "Horno para escencias",
-        urlImagen: "horno.jpg",
-        precio: 1100,
-        descripcion: "Horno a vela para escencias , 15cm ",
-        stock: 25
-    },
-
-    
+        nombre: "Escencias para horno",
+        urlImagen: "aceite.jpg",
+        precio: 1000,
+        descripcion: "Escencias para hornito, fragancias como: frutilla, vainilla, chocolate, jazmin, 7 poderes",
+        stock: 40
+    }
 ];
 
 function cargarproductos() {
-    let enlaces = document.getElementById("boxproductos");
+    let enlaces = document.getElementById("boxproductos")
     for (const producto of productos) {
-        let lista = document.createElement("div");
+        let lista = document.createElement("div")
         lista.classList.add('producto-card');
-        lista.innerHTML = `
+        lista.innerHTML =`
             <h3>${producto.nombre}</h3>
             <img src="${producto.urlImagen}" alt="${producto.nombre}">
             <p class="precio">$${producto.precio}</p>
-            <button onclick="verdetalle(${producto.id})">Detalles</button>
+            <button onclick="verdetalle('${producto.id}')">Detalles</button>
         `;
         enlaces.appendChild(lista);
     }
 }
-cargarproductos();
+cargarproductos()
 
 function verdetalle(idproducto) {
-    // Se guarda el producto que se desea ver en localStorage
-    const buscarProducto = productos.find(producto => producto.id === idproducto);
-    if (buscarProducto) {
-        const enJSON = JSON.stringify(buscarProducto);
-        localStorage.setItem("detalleproducto", enJSON);
-        window.location.href = "detalle.html";
-    } else {
-        console.error("Producto no encontrado");
-    }
+    const buscarProducto = productos.find(producto => producto.id === parseInt(idproducto));
+    const enJSON = JSON.stringify(buscarProducto);
+    localStorage.setItem("detalleproducto", enJSON)
+    window.location.href = "detalle.html";
 }
